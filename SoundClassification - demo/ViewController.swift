@@ -93,6 +93,7 @@ class ViewController: UIViewController {
     @objc func didChangeSlider(sender:UISlider){
         currentSliderValue = sender.value
         MusicManager.sharedInstance.player?.volume = sender.value
+        volumeBar.volumeImage.image = UIImage(systemName: "volume.3.fill", variableValue: Double(sender.value))
     }
     
     @objc func didTapPlayBtn(){
@@ -231,10 +232,12 @@ extension ViewController: SNResultsObserving{
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
             if self.isSomeoneSpeaking && player.isPlaying{
+                let volume = self.getDecreasedVolume(player: player)
                 UIView.animate(withDuration: 2) {
-                    self.volumeBar.volumeSlider.setValue(self.getDecreasedVolume(player: player), animated: true)
+                    self.volumeBar.volumeSlider.setValue(volume, animated: true)
                 }completion: { _ in
-                    player.volume = self.getDecreasedVolume(player: player)
+                    player.volume = volume
+                    self.volumeBar.volumeImage.image = UIImage(systemName: "volume.3.fill", variableValue: Double(volume))
                 }
             }
             else{
@@ -242,6 +245,7 @@ extension ViewController: SNResultsObserving{
                     self.volumeBar.volumeSlider.setValue(self.currentSliderValue, animated: true)
                 }completion: { _ in
                     player.volume = self.currentSliderValue
+                    self.volumeBar.volumeImage.image = UIImage(systemName: "volume.3.fill", variableValue: Double(self.currentSliderValue))
                 }
             }
         }

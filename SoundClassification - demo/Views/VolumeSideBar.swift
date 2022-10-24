@@ -13,17 +13,18 @@ class VolumeSideBar: UIView{
     let stack:UIStackView = {
         
         let s = UIStackView()
-        s.axis = .horizontal
+        s.axis = .vertical
         s.distribution = .fill
         s.spacing = 15
         s.translatesAutoresizingMaskIntoConstraints = false
         return s
     }()
     
-    let downVolumeImage:UIImageView = {
+    let volumeImage:UIImageView = {
       
         let img = UIImageView()
-        img.image = UIImage(systemName: "volume.1.fill")
+        let config = UIImage.SymbolConfiguration.preferringMulticolor()
+        img.image = UIImage(systemName: "volume.3.fill", variableValue: 0.65, configuration: config)
         img.contentMode = .scaleAspectFit
         img.tintColor = .systemTeal
         return img
@@ -40,22 +41,12 @@ class VolumeSideBar: UIView{
         return slider
     }()
     
-    let upVolumeImage:UIImageView = {
-      
-        let img = UIImageView()
-        img.image = UIImage(systemName: "volume.3.fill")
-        img.contentMode = .scaleAspectFit
-        img.tintColor = .systemTeal
-        return img
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        stack.addArrangedSubview(downVolumeImage)
+        stack.addArrangedSubview(volumeImage)
         stack.addArrangedSubview(volumeSlider)
-        stack.addArrangedSubview(upVolumeImage)
         self.addSubview(stack)
     }
     
